@@ -3,6 +3,7 @@ import sqlite3
 from app import app
 from model.user_model import user_model
 from flask import request
+from flask import make_response
 
 obj=user_model()
 
@@ -30,4 +31,8 @@ def user_update_controller():
 @app.route('/user/delete',methods=["DELETE"])
 def user_delete_controller():
     return obj.user_delete_model(request.form)
+
+@app.route("/user/patch/<id>",methods=["PATCH"])
+def user_patch_controller(id):
+    return obj.user_patch_model(request.form,id)
 
