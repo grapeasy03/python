@@ -78,7 +78,17 @@ class user_model:
         # update users set col=val,col=val where id={id}
         # return qry[:-2]
 
-
+    def user_pagination_model(self,limit,page):
+        page=int(page)
+        limit=int(limit)
+        start=(page*limit)-limit
+        qry=f"select * from users limit {start},{limit}"
+        self.cur.execute(qry)
+        data=self.cur.fetchall()
+        if len(data)>0:
+            return make_response({"message":data},200)
+        else:
+            return make_response({"message":"No data found"},202)
 
 
 
