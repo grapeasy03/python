@@ -90,5 +90,12 @@ class user_model:
         else:
             return make_response({"message":"No data found"},202)
 
+    def user_upload_avatar_controller(self, uid, filepath):
+        # Use parameterized query and consistent case for table name
+        self.cur.execute("UPDATE users SET avatar = %s WHERE id = %s", (filepath, uid))
+        if self.cur.rowcount > 0:
+            return make_response({"message": "Avatar updated successfully"}, 200)
+        else:
+            return make_response({"message": "Nothing to update"}, 202)
 
 

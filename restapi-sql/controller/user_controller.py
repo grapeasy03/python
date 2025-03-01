@@ -3,6 +3,7 @@ import sqlite3
 from app import app
 from model.user_model import user_model
 from flask import request
+from datetime import datetime
 from flask import make_response
 
 obj=user_model()
@@ -40,3 +41,18 @@ def user_patch_controller(id):
 def user_pagination_controller(limit,page):
     return obj.user_pagination_model(limit,page)
     
+    
+@app.route("/user/<uid>/upload/avatar",methods=["PUT"])
+def user_upload_avatar_controller(uid):
+    file=request.files["avatar"]
+    #file.save(f"uploads/{file.filename}")
+    # datetime.now()
+    uFileName=str(datetime.now().timestamp()).replace(".","")
+    print(f"uFileName: {uFileName}")
+    fileNamesplit= file.filename.split(".")
+    print(f"fileNamesplit: {fileNamesplit}")
+    fileExt=fileNamesplit[-1]
+    finalFileName=f"uploads/{uFileName}.{fileExt}"
+    print(fileExt)
+    file.save(finalFileName)
+    return obj.user_upload_avatar_controller(uid,finalFileName)
